@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId     BigInt        @id @default(autoincrement())
+  email      String?
+  infoId     BigInt        @unique
+  name       String?
+  profileImg String?
+  createAt   DateTime?
+  updateAt   DateTime?
+  status     String?
+  fridges    FridgeGroup[]
+}
+
+model Fridge {
+  fridgeId     BigInt        @id @default(autoincrement())
+  fridgeName   String
+  createAt     DateTime?
+  updateAt     DateTime?
+  fridgeFg String @default("1")
+  fridgeGroups FridgeGroup[]
+  products Product[]
+}
+
+model FridgeGroup {
+  fridgeId BigInt
+  userId   BigInt
+  createAt DateTime?
+  updateAt DateTime?
+  fridge   Fridge    @relation(fields: [fridgeId], references: [fridgeId])
+  user     User      @relation(fields: [userId], references: [userId])
+
+  @@id([fridgeId, userId])
+  @@index([userId], map: "FridgeGroup_userId_fkey")
+}
+
+model Product {
+  productId   BigInt    @id @default(autoincrement())
+  fridgeId    BigInt
+  date        String?
+  productImg  String?
+  description String?
+  createAt    DateTime?
+  updateAt    DateTime?
+  productName String?
+  productFg String @default("1")
+  fridge   Fridge    @relation(fields: [fridgeId], references: [fridgeId])
+}

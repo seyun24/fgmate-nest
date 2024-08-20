@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `Fridge` ADD COLUMN `fridgeFg` VARCHAR(191) NOT NULL DEFAULT '1';
+
+-- AlterTable
+ALTER TABLE `Product` ADD COLUMN `productFg` VARCHAR(191) NOT NULL DEFAULT '1';
